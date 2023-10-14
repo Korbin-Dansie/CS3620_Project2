@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     # Third Pary
 
     # Custom Apps
-    "stories"
+    "stories",
+    "users"
 ]
 
 MIDDLEWARE = [

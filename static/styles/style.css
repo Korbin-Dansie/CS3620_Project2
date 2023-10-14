@@ -9,3 +9,23 @@
     background-color: var(--red);
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15), inset 0 -1px 0 rgba(255,255,255,0.15);
 }
+
+button.bd-btn-secondary
+{
+    background-color: var(--cream);
+}
+
+button.bd-btn-secondary:hover
+{
+    background-color: var(--cream);
+    filter: brightness(105%);
+}
+
+button.bd-btn-secondary:active,
+button.bd-btn-secondary:focus,
+button.bd-btn-secondary:target,
+button.bd-btn-secondary:active:focus
+{
+    background-color: var(--cream);
+    filter: brightness(105%);
+}
