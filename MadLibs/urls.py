@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+# Custom views
+from stories.views import home_view
 urlpatterns = [
+    path('', home_view, name='home'), # Change the index page
     path('admin/', admin.site.urls),
 ]
