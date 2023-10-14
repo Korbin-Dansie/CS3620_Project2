@@ -29,3 +29,23 @@ button.bd-btn-secondary:active:focus
     background-color: var(--cream);
     filter: brightness(105%);
 }
+
+a.bd-btn-secondary
+{
+    background-color: var(--cream);
+}
+
+a.bd-btn-secondary:hover
+{
+    background-color: var(--cream);
+    filter: brightness(105%);
+}
+
+a.bd-btn-secondary:active,
+a.bd-btn-secondary:focus,
+a.bd-btn-secondary:target,
+a.bd-btn-secondary:active:focus
+{
+    background-color: var(--cream);
+    filter: brightness(105%);
+}
