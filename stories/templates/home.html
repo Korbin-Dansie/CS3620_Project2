@@ -3,4 +3,11 @@
 {% block content %}
 {% load static %}
 <h2>Home Page</h2>
+{% for story in stories %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{story.name}}</h5>
+    </div>    
+</div>
+{% endfor %}
 {% endblock %}
