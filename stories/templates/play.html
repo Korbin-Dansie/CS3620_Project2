@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<h2>{{ story.title }}</h2>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{story.title}}</h5>
+        <form method="POST" enctype="multipart/form-data"> 
+            <!-- Management data of formset -->
+            {{ formset.management_data }} 
+
+            {% csrf_token %} 
+            {{ formset.as_p }}
+            <input type="submit" value="Submit"> 
+        </form> 
+    </div>    
+</div>
+{% endblock %}

@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 # Custom views
-from stories.views import home_view, create_story_view
+from stories.views import home_view, create_story_view, play_story_view
 urlpatterns = [
     path('', home_view, name='home'), # Change the index page
     path('story/create/', create_story_view, name='create'), # Change the index page
+    path('story/play/<int:storyId>/', play_story_view, name='play'), # Change the index page
 
 
     path('admin/', admin.site.urls),
