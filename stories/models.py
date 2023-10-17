@@ -32,6 +32,6 @@ class Prompt(models.Model):
     start = models.IntegerField() # The start location of the string to be replaced
     end = models.IntegerField() # The end location of the string to be replaced
     prompt = models.TextField(max_length=32) # Store the promts in a json array
-    answer = models.TextField(max_length=32, blank=True, default="[Blank]") # Store the user submited value
+    answer = models.TextField(max_length=32, blank=True, default="") # Store the user submited value
     # NOTE: Because we changed related name we do not use prompt_set we just use prompts
-    story = models.ForeignKey(Story, related_name = 'prompts', on_delete=models.CASCADE)
+    story = models.ForeignKey(Story, related_name = 'prompts', on_delete=models.CASCADE)        
