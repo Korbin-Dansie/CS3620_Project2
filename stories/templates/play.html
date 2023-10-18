@@ -18,7 +18,7 @@
       <!-- How to render djanago forms - https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html#rendering-bootstrap-4-forms -->
 
       {% for form in formset %}
-      <!-- Loop through the feilds in each form -->
+      <!-- Loop through the hidden fields of each form -->
       {% for hidden_field in form.hidden_fields %}
       {% if hidden_field.errors %}
       <ul>
@@ -32,7 +32,17 @@
       {% endif %}
       {{ hidden_field }}
       {% endfor %}
-
+      <!-- Loop through any non field errors -->
+      {% if form.non_field_errors %}
+      <ul>
+        {% for error in form.non_field_errors %}
+        <li>
+          {{ error }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <!-- Display prompt field -->
       <div class="row mb-3">
         <div class="col-md-6">
           {{ form.prompt.errors }}
