@@ -6,49 +6,23 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">{{story.title}}</h5>
-        <form method="POST" enctype="multipart/form-data" action="display/"> 
+        <form method="POST" enctype="multipart/form-data" action=""> 
             <!-- Management data of formset -->
-            {{ formset.management_data }} 
+            {{ formset.management_form }}
 
             <!-- csrf token -->
             {% csrf_token %}
             <!-- Loop through the forms -->
             <!-- How to render djanago forms - https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html#rendering-bootstrap-4-forms -->
-            {% for form in formset %}
-
-                {% if form.non_field_errors %}
-                    <ul>
-                    {% for error in form.non_field_errors %}
-                       <li>{{ error }}</li>
-                    {% endfor %}
-                    </ul>
-                {% endif %}
-        
-                <!-- Display the hidden feilds -->
-                {% for hidden_field in form.hidden_fields %}
-                    {% if hidden_field.errors %}
-                    <ul>
-                    {% for error in hidden_field.errors %}
-                        <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
-                    {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {{ hidden_field }}
+            {{ formset.management_form }}
+            <table>
+                {% for form in formset %}
+                {{ form }}
                 {% endfor %}
-        
-                <table>
-                    {% for field in form.visible_fields %}
-                      <tr>
-                        <th>{{ field.label_tag }}</th>
-                        <td>
-                          {{ field.errors }}
-                          {{ field }}
-                          {{ field.help_text }}
-                        </td>
-                      </tr>
-                    {% endfor %}
-                </table>
-                
+            </table>
+            
+            <!-- {{ formset.as_p }} -->
+
                 <!-- Loop through the feilds in each form -->
                 <!-- <div class="row mb-3">
                     <div class="col-md-6">
@@ -60,7 +34,6 @@
                         {{ form.answer.label_tag }} {{ form.answer }}
                     </div>    
                 </div> -->
-            {% endfor %}
             <input type="submit" value="Submit" class="btn btn-primary"> 
         </form> 
     </div>    

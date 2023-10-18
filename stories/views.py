@@ -32,42 +32,39 @@ def play_story_view(request, storyId, *args, **kwargs):
     story = Story.objects.get(pk = storyId)
     PromptFormSet = modelformset_factory(Prompt, form=PromptForm, extra=0)
     qs = story.prompts.all()
-    formset = PromptFormSet(request.POST or None, queryset=qs)
+    # If we are posting back to the webpage
+    if request.method == 'POST':
+        formset = PromptFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            story_value = ""
+            story_splice_start = 0
+            story_splice_end = len(story.story)
+
+            for form in formset.forms:
+                prompt_value = form.cleaned_data['answer']
+                prompt_start = form.cleaned_data['start']
+                prompt_end = form.cleaned_data['end']
+
+                # Splice the story with the input answers
+                story_value = story_value + story.story[story_splice_start:prompt_start] + prompt_value
+                story_splice_start = prompt_end
+            # add the rest of the story
+            story_value = story_value + story.story[story_splice_start:]
+            my_context = {
+                "story": story,
+                "result_sotry": story_value,
+                "formset": formset,
+                "site_title": "Play"
+            }
+            return render(request, "display.html", my_context) # return an html template
+        else:
+            for error in formset.errors:
+                print(error)
+    # Else we are GETing the webpage
+    formset = PromptFormSet(queryset=qs)
     my_context = {
-        "story": story,
-        "formset": formset,
-        "site_title": "Play"
+            "story": story,
+            "formset": formset,
+            "site_title": "Play"
     }
     return render(request, "play.html", my_context) # return an html template
-
-def display_story_view(request, storyId, *args, **kwargs):
-    """ Display the story with the prompts the users suplied """
-    story = Story.objects.get(pk = storyId)
-    PromptFormSet = modelformset_factory(Prompt, form=PromptForm, extra=0)
-    qs = story.prompts.all()
-    formset = PromptFormSet(request.POST or None, queryset=qs)
-
-    if all([formset.is_valid()]):
-        story_value = ""
-        story_splice_start = 0
-        story_splice_end = len(story.story)
-
-        for form in formset.forms:
-            prompt_value = form.cleaned_data['answer']
-            prompt_start = form.cleaned_data['start']
-            prompt_end = form.cleaned_data['end']
-
-            # Splice the story with the input answers
-            story_value = story_value + story.story[story_splice_start:prompt_start] + prompt_value
-            story_splice_start = prompt_end
-        # add the rest of the story
-        story_value = story_value + story.story[story_splice_start:]
-    else:
-        return redirect('play', storyId) # return an html template
-    my_context = {
-        "story": story,
-        "result_sotry": story_value,
-        "formset": formset,
-        "site_title": "Play"
-    }
-    return render(request, "display.html", my_context) # return an html template
