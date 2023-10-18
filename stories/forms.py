@@ -10,11 +10,11 @@ class PromptForm(forms.ModelForm):
     class Meta:
         model = Prompt
         fields = "__all__"
-        # widgets =   { 
-        #     'start' : forms.HiddenInput(), 
-        #     'end' : forms.HiddenInput(), 
-        #     'story' : forms.HiddenInput(),
+        widgets =   { 
+            'start' : forms.HiddenInput(), 
+            'end' : forms.HiddenInput(), 
+            'story' : forms.HiddenInput(),
 
-        #     'answer': forms.TextInput(attrs={'class': 'form-control'}),
-        #     'prompt' : forms.TextInput(attrs={'class': 'form-control'}),
-        #             }
+            'answer': forms.TextInput(attrs={'class': 'form-control'}),
+            'prompt' : forms.TextInput(attrs={'class': 'form-control'}),
+                    }

@@ -32,9 +32,9 @@ def play_story_view(request, storyId, *args, **kwargs):
     story = Story.objects.get(pk = storyId)
     PromptFormSet = modelformset_factory(Prompt, form=PromptForm, extra=0)
     qs = story.prompts.all()
+    formset = PromptFormSet(request.POST or None, queryset=qs)
     # If we are posting back to the webpage
     if request.method == 'POST':
-        formset = PromptFormSet(request.POST, request.FILES)
         if formset.is_valid():
             story_value = ""
             story_splice_start = 0
@@ -61,7 +61,6 @@ def play_story_view(request, storyId, *args, **kwargs):
             for error in formset.errors:
                 print(error)
     # Else we are GETing the webpage
-    formset = PromptFormSet(queryset=qs)
     my_context = {
             "story": story,
             "formset": formset,

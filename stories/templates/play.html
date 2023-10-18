@@ -2,40 +2,52 @@
 
 {% block content %}
 {% load static %}
-<h2>{{ story.title }}</h2>
+<h2>
+  {{ story.title }}
+</h2>
 <div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{story.title}}</h5>
-        <form method="POST" enctype="multipart/form-data" action=""> 
-            <!-- Management data of formset -->
-            {{ formset.management_form }}
+  <div class="card-body">
+    <h5 class="card-title">{{story.title}}</h5>
+    <form method="POST" enctype="multipart/form-data" action="">
+      <!-- Management data of formset -->
+      {{ formset.management_form }}
 
-            <!-- csrf token -->
-            {% csrf_token %}
-            <!-- Loop through the forms -->
-            <!-- How to render djanago forms - https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html#rendering-bootstrap-4-forms -->
-            {{ formset.management_form }}
-            <table>
-                {% for form in formset %}
-                {{ form }}
-                {% endfor %}
-            </table>
-            
-            <!-- {{ formset.as_p }} -->
+      <!-- csrf token -->
+      {% csrf_token %}
+      <!-- Loop through the forms -->
+      <!-- How to render djanago forms - https://simpleisbetterthancomplex.com/article/2017/08/19/how-to-render-django-form-manually.html#rendering-bootstrap-4-forms -->
 
-                <!-- Loop through the feilds in each form -->
-                <!-- <div class="row mb-3">
-                    <div class="col-md-6">
-                        {{ form.prompt.errors }}
-                        {{ form.prompt.label_tag }} {{ form.prompt }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form.answer.errors }}
-                        {{ form.answer.label_tag }} {{ form.answer }}
-                    </div>    
-                </div> -->
-            <input type="submit" value="Submit" class="btn btn-primary"> 
-        </form> 
-    </div>    
+      {% for form in formset %}
+      <!-- Loop through the feilds in each form -->
+      {% for hidden_field in form.hidden_fields %}
+      {% if hidden_field.errors %}
+      <ul>
+        {% for error in hidden_field.errors %}
+        <li>(Hidden field
+          {{ hidden_field.name }})
+          {{ error }}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {{ hidden_field }}
+      {% endfor %}
+
+      <div class="row mb-3">
+        <div class="col-md-6">
+          {{ form.prompt.errors }}
+          {{ form.prompt.label_tag }}
+          {{ form.prompt }}
+        </div>
+        <div class="col-md-6">
+          {{ form.answer.errors }}
+          {{ form.answer.label_tag }}
+          {{ form.answer }}
+        </div>
+      </div>
+      {% endfor %}
+      <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+  </div>
 </div>
 {% endblock %}
