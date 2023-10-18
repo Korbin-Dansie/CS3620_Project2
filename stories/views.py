@@ -47,7 +47,6 @@ def display_story_view(request, storyId, *args, **kwargs):
     qs = story.prompts.all()
     formset = PromptFormSet(request.POST or None, queryset=qs)
 
-    # Loop though the story incerting the prompts the user supplied
     if all([formset.is_valid()]):
         story_value = ""
         story_splice_start = 0
@@ -64,7 +63,7 @@ def display_story_view(request, storyId, *args, **kwargs):
         # add the rest of the story
         story_value = story_value + story.story[story_splice_start:]
     else:
-        return redirect(request, "play.html", my_context) # return an html template
+        return redirect('play', storyId) # return an html template
     my_context = {
         "story": story,
         "result_sotry": story_value,
