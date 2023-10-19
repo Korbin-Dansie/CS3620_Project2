@@ -90,6 +90,14 @@ def user_edit_post_view(request, username, storyId, *args, **kwargs):
         redirect("users:login")
     
     form = StoriesForm(instance=story[0])
+    # Update the entires
+    if request.method == "POST":
+        form = StoriesForm(request.POST, instance=story[0])
+        if form.is_valid():
+            form.cleaned_data['author'] = story[0].author # Set to the original author
+            # save the info
+            Story.objects.edit_story(story[0].id, form.cleaned_data['title'], form.cleaned_data['story'], form.cleaned_data['author'])
+            return redirect("home")
 
     my_context = {
         "form": form,

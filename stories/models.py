@@ -18,6 +18,21 @@ class StoryManager(models.Manager):
         # to call is use Story.objects.create_story(...)
         return newstory
 
+    def edit_story(self, id, title, story, author):
+        oldstory = Story.objects.get(id=id)
+        # TODO: Update to be more efficant update prompts instead of deleteing them
+        if oldstory.prompts:
+            for prompt in oldstory.prompts.all():
+                prompt.delete()
+
+        # Parse the story and create the promts
+        matches=re.finditer(r"\[(?:(?:(?!(?<!\\)\]).)*)]", story) # Based off of finding mathcing quotes - https://stackoverflow.com/questions/9519734/python-regex-to-find-a-string-in-double-quotes-within-a-string
+        for match in matches:
+            Prompt.objects.create(prompt=match.group(), start=match.start(), end=match.end(), story=oldstory)
+        Story.objects.filter(id=id).update(title=title, story=story)
+
+        # to call is use Story.objects.create_story(...)
+
 class Story(models.Model):
     title = models.CharField(max_length=64)
     story = models.TextField(max_length=1024)
