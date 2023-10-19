@@ -1,4 +1,20 @@
 {% extends 'base.html' %}
+{% block header %}
+<script defer>
+  // Because form promt is readonly we need to renable it before sending it to the server
+  function enable_prompt(el){
+    console.log(el);
+    for (const input of el){
+      console.log(input);
+      input.readonly = false;
+      input.disabled = false;
+    }
+
+    // Submit form
+    return true;
+  }
+</script>
+{% endblock %}
 
 {% block content %}
 {% load static %}
@@ -8,7 +24,7 @@
 <div class="card">
   <div class="card-body">
     <h5 class="card-title">{{story.title}}</h5>
-    <form method="POST" enctype="multipart/form-data" action="">
+    <form method="POST" enctype="multipart/form-data" action="" onsubmit="return enable_prompt(this)">
       <!-- Management data of formset -->
       {{ formset.management_form }}
 
@@ -44,19 +60,17 @@
       {% endif %}
       <!-- Display prompt field -->
       <div class="row mb-3">
-        <div class="col-md-6">
-          {{ form.prompt.errors }}
-          {{ form.prompt.label_tag }}
-          {{ form.prompt }}
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
           {{ form.answer.errors }}
-          {{ form.answer.label_tag }}
+          {{ form.prompt }}
           {{ form.answer }}
         </div>
       </div>
       {% endfor %}
       <input type="submit" value="Submit" class="btn btn-primary">
+      {% if formset.errors %}
+        {{ formset.errors }}
+      {% endif %}
     </form>
   </div>
 </div>

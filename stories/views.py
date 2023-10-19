@@ -38,7 +38,6 @@ def play_story_view(request, storyId, *args, **kwargs):
         if formset.is_valid():
             story_value = ""
             story_splice_start = 0
-            story_splice_end = len(story.story)
 
             for form in formset.forms:
                 prompt_value = form.cleaned_data['answer']
@@ -46,21 +45,25 @@ def play_story_view(request, storyId, *args, **kwargs):
                 prompt_end = form.cleaned_data['end']
 
                 # Splice the story with the input answers
+                # If the input awnsers are blank just add the prompt value
+                if not prompt_value:
+                    prompt_value = form.cleaned_data['prompt']
                 story_value = story_value + story.story[story_splice_start:prompt_start] + prompt_value
                 story_splice_start = prompt_end
             # add the rest of the story
             story_value = story_value + story.story[story_splice_start:]
             my_context = {
                 "story": story,
-                "result_sotry": story_value,
+                "result_story": story_value,
                 "formset": formset,
                 "site_title": "Play"
             }
             return render(request, "display.html", my_context) # return an html template
-        else:
-            for error in formset.errors:
-                print(error)
+
     # Else we are GETing the webpage
+    # Set all awnsers to blank on inital
+    for form in formset:
+        form.initial['answer'] = ""
     my_context = {
             "story": story,
             "formset": formset,

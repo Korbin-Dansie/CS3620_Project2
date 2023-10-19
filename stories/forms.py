@@ -16,5 +16,5 @@ class PromptForm(forms.ModelForm):
             'story' : forms.HiddenInput(),
 
             'answer': forms.TextInput(attrs={'class': 'form-control'}),
-            'prompt' : forms.TextInput(attrs={'class': 'form-control'}),
+            'prompt' : forms.TextInput(attrs={'class': 'form-control-plaintext', "disabled": True, "readonly": True}),
                     }
