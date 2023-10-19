@@ -2,12 +2,16 @@
 
 {% block content %}
 {% load static %}
+{% load display_mablib %}
+
 <h2>{{ story.title }}</h2>
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">{{story.title}}</h5>
         <p>
-            {{ result_story }}
+            {% for story_part in result_story %}
+                <span>{{story_part.0}}<span class="fw-bold">{{story_part.1}}</span></span>
+            {% endfor %}
         </p>
     </div>    
 </div>

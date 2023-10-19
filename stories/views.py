@@ -36,7 +36,7 @@ def play_story_view(request, storyId, *args, **kwargs):
     # If we are posting back to the webpage
     if request.method == 'POST':
         if formset.is_valid():
-            story_value = ""
+            story_value = []
             story_splice_start = 0
 
             for form in formset.forms:
@@ -48,14 +48,16 @@ def play_story_view(request, storyId, *args, **kwargs):
                 # If the input awnsers are blank just add the prompt value
                 if not prompt_value:
                     prompt_value = form.cleaned_data['prompt']
-                story_value = story_value + story.story[story_splice_start:prompt_start] + prompt_value
+                # story_value = story_value + story.story[story_splice_start:prompt_start] + prompt_value
+                story_value.append([story.story[story_splice_start:prompt_start], prompt_value])
                 story_splice_start = prompt_end
             # add the rest of the story
-            story_value = story_value + story.story[story_splice_start:]
+            # story_value = story_value + story.story[story_splice_start:]
+            story_value.append([story.story[story_splice_start:], ""])
+
             my_context = {
                 "story": story,
                 "result_story": story_value,
-                "formset": formset,
                 "site_title": "Play"
             }
             return render(request, "display.html", my_context) # return an html template
