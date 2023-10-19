@@ -16,12 +16,15 @@ def home_view(request, *args, **kwargs):
 def create_story_view(request, *args, **kwargs):
     if request.method == "POST":
         form = StoriesForm(request.POST)
+
         if form.is_valid():
+            form.cleaned_data['author'] = request.user # Set to the current logged in user
             # save the info
             Story.objects.create_story(form.cleaned_data['title'], form.cleaned_data['story'], form.cleaned_data['author'])
             return redirect("home")
     else: # GET request
         form = StoriesForm()
+        form.initial['author'] = request.user.id # Set to the current logged in user
     my_context = {
         "form": form,
         "site_title": "Create"

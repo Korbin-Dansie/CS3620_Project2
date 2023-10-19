@@ -5,6 +5,10 @@ class StoriesForm(forms.ModelForm):
     class Meta:
         model = Story
         fields = "__all__"
+        widgets =   { 
+            'author': forms.HiddenInput(),
+        }
+
 
 class PromptForm(forms.ModelForm):
     class Meta:
