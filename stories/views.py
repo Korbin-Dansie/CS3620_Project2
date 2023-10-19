@@ -75,3 +75,24 @@ def play_story_view(request, storyId, *args, **kwargs):
             "site_title": "Play"
     }
     return render(request, "play.html", my_context) # return an html template
+
+def user_posts_view(request, username, *args, **kwargs):
+    my_context = {
+        "stories": Story.objects.filter(author=request.user),
+        "site_title": "My Posts"
+    }
+    return render(request, "users/user_posts.html", my_context) # return an html template
+
+def user_edit_post_view(request, username, storyId, *args, **kwargs):
+    # Check if the user has privilege to access the post
+    story = Story.objects.filter(author=request.user, id=storyId)[:1] # Limit to the first post
+    if(story is None):
+        redirect("users:login")
+    
+    form = StoriesForm(instance=story[0])
+
+    my_context = {
+        "form": form,
+        "site_title": "My Posts"
+    }
+    return render(request, "users/user_post_edit.html", my_context) # return an html template

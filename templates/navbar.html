@@ -10,6 +10,9 @@
         <li class="nav-item">
           <a class="nav-link bd-navbar-link" href="{% url 'create' %}">Create</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link bd-navbar-link" href="{% url 'mablibs' request.user.username %}">My Madlibs</a>
+        </li>
         {% endif %}
       </ul>
       <ul class="navbar-nav navbar-right ms-auto mb-2 mb-sm-0">
