@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<h1>Create Story</h1>
+<div class="card">
+  <div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <!-- Start of Submit buttons -->
+      <div class="d-flex">
+        {% if form.id != 0 %}
+        <div class="">
+          <button type="button" class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#preferenceModal">
+            <span>
+              <i class="bi bi-trash text-white"></i>
+            </span>
+            Delete
+          </button>
+        </div>
+        {% endif %}
+        <div class="ms-auto">
+          <a href="{% url 'home' %}" class="btn btn-secondary shadow-sm">Cancel</a>
+          {% if form.id != 0 %}
+          <input href="{% url 'mablibs_create' %}" type="submit" class="btn btn-primary shadow-sm" value="Save" />
+          {% else %}          
+          <input href="{% url 'mablibs_edit' request.username form.id %}" type="submit" class="btn btn-primary shadow-sm" value="Save" />
+          {% endif %}
+        </div>
+      </div>
+      <!-- End of Submit buttons -->
+    </form>
+  </div>
+</div>
+{% endblock %}

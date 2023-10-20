@@ -29,7 +29,7 @@ def create_story_view(request, *args, **kwargs):
         "form": form,
         "site_title": "Create"
     }
-    return render(request, "create.html", my_context) # return an html template
+    return render(request, "users/user_post_create.html", my_context) # return an html template
 
 def play_story_view(request, storyId, *args, **kwargs):
     story = Story.objects.get(pk = storyId)
