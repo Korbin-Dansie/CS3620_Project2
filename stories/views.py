@@ -31,6 +31,46 @@ def create_story_view(request, *args, **kwargs):
     }
     return render(request, "users/user_post_create.html", my_context) # return an html template
 
+def user_edit_post_view(request, username, storyId, *args, **kwargs):
+    # Check if the user has privilege to access the post
+    story = Story.objects.filter(author=request.user, id=storyId)[:1] # Limit to the first post
+    if(story is None):
+        redirect("users:login")
+    
+    form = StoriesForm(instance=story[0])
+    # Update the entires
+    if request.method == "POST":
+        form = StoriesForm(request.POST, instance=story[0])
+        if form.is_valid():
+            form.cleaned_data['author'] = story[0].author # Set to the original author
+            # save the info
+            Story.objects.edit_story(story[0].id, form.cleaned_data['title'], form.cleaned_data['story'], form.cleaned_data['author'])
+            return redirect("home")
+    
+    my_context = {
+        "form": form,
+        "story": story[0],
+        "site_title": "My Posts"
+    }
+    return render(request, "users/user_post_edit.html", my_context) # return an html template
+
+def user_delete_post_view(request, username, storyId, *args, **kwargs):
+    # Check if the user has privilege to access the post
+    story = Story.objects.filter(author=request.user, id=storyId)[:1] # Limit to the first post
+    if(story is None):
+        redirect("users:login")
+    
+    form = StoriesForm(instance=story[0])
+    # Update the entires
+    if request.method == "POST":
+        form = StoriesForm(request.POST, instance=story[0])
+        if form.is_valid():
+            story[0].delete()
+            return redirect("home")
+    
+    return redirect("home")
+
+
 def play_story_view(request, storyId, *args, **kwargs):
     story = Story.objects.get(pk = storyId)
     PromptFormSet = modelformset_factory(Prompt, form=PromptForm, extra=0)
@@ -82,25 +122,3 @@ def user_posts_view(request, username, *args, **kwargs):
         "site_title": "My Posts"
     }
     return render(request, "users/user_posts.html", my_context) # return an html template
-
-def user_edit_post_view(request, username, storyId, *args, **kwargs):
-    # Check if the user has privilege to access the post
-    story = Story.objects.filter(author=request.user, id=storyId)[:1] # Limit to the first post
-    if(story is None):
-        redirect("users:login")
-    
-    form = StoriesForm(instance=story[0])
-    # Update the entires
-    if request.method == "POST":
-        form = StoriesForm(request.POST, instance=story[0])
-        if form.is_valid():
-            form.cleaned_data['author'] = story[0].author # Set to the original author
-            # save the info
-            Story.objects.edit_story(story[0].id, form.cleaned_data['title'], form.cleaned_data['story'], form.cleaned_data['author'])
-            return redirect("home")
-
-    my_context = {
-        "form": form,
-        "site_title": "My Posts"
-    }
-    return render(request, "users/user_post_edit.html", my_context) # return an html template

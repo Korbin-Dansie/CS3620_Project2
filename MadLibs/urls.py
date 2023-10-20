@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 # Custom views
-from stories.views import home_view, create_story_view, play_story_view, user_posts_view, user_edit_post_view
+from stories.views import home_view, create_story_view, play_story_view, user_posts_view, user_edit_post_view, user_delete_post_view
 urlpatterns = [
     path('', home_view, name='home'), # Change the index page
     path('story/create/', create_story_view, name='mablibs_create'), # Change the index page
@@ -27,6 +27,7 @@ urlpatterns = [
     
     path('story/users/<str:username>/posts/', user_posts_view, name='mablibs'), # Display a list of users posts
     path('story/users/<str:username>/posts/<int:storyId>/', user_edit_post_view, name='mablibs_edit'), # Edit one of the user posts
+    path('story/users/<str:username>/posts/<int:storyId>/delete', user_delete_post_view, name='mablibs_delete'), # Edit one of the user posts
 
 
     path('admin/', admin.site.urls),

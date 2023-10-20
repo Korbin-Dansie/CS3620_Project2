@@ -7,7 +7,7 @@ class StoriesForm(forms.ModelForm):
         fields = "__all__"
         widgets =   { 
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'story' : forms.TextInput(attrs={'class': 'form-control'}),
+            'story' : forms.Textarea(attrs={'class': 'form-control'}),
 
             'author': forms.HiddenInput(),
         }
