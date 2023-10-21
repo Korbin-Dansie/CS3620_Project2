@@ -7,8 +7,16 @@
      */
     function add_prompt(el){
         let storyElement = document.getElementById("id_story");
-        storyElement.value += el.innerText;
-    }
+        if(storyElement.selectionStart || storyElement.selectionStart == "0"){
+            let cursorPositionStart = storyElement.selectionStart;
+            let cursorPositionEnd = storyElement.selectionEnd;
+            storyElement.value = storyElement.value.substring(0, cursorPositionStart) + el.innerText + storyElement.value.substring(cursorPositionEnd, storyElement.value.length);
+        }
+        // Else we are not selected so insert at the end
+        else{
+            storyElement.value += el.innerText;
+        }
+    }   
 </script>
 {% endblock %}
 
