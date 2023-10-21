@@ -2,12 +2,11 @@
 
 {% block content %}
 {% load static %}
-<h2>Home Page</h2>
+<h2>My Posts</h2>
 {% for story in stories %}
 <div class="card">
     <div class="card-body">
-        <p class="fw-light">By: {{story.author.username}}</p>
-        <h4 class="card-title"><a href="{% url 'play' story.id %}">{{story.title}}</a></h4>
+        <h5 class="card-title"><a href="{% url 'mablibs_edit' request.user.username story.id %}">{{story.title}}</a></h5>
     </div>    
 </div>
 {% endfor %}
